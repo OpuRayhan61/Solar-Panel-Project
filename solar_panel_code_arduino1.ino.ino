@@ -1,25 +1,25 @@
-// Techatronic.com
-#include <Servo.h>      //including the library of servo motor 
+
+#include <Servo.h>      
 Servo sg90;             
 int initial_position = 90;   
-int LDR1 = A0;          //connect The LDR1 on Pin A0
-int LDR2 = A1;          //Connect The LDR2 on pin A1
+int LDR1 = A0;        
+int LDR2 = A1;
 int error = 5;         
-int servopin=4;         //You can change servo just makesure its on arduino's PWM pin
+int servopin=4;         
 void setup() 
 { 
 
   sg90.attach(servopin);  
   pinMode(LDR1, INPUT);   
   pinMode(LDR2, INPUT);
-  sg90.write(initial_position);   //Move servo at 90 degree
+  sg90.write(initial_position);   
   delay(2000);           
 }  
  
 void loop() 
 { 
-  int R1 = analogRead(LDR1); // read  LDR 1
-  int R2 = analogRead(LDR2); // read  LDR 2
+  int R1 = analogRead(LDR1); 
+  int R2 = analogRead(LDR2); 
   Serial.println(R1);
   Serial.println("LDR1");
   Serial.println(R2);
