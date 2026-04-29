@@ -1,45 +1,78 @@
+#include <Servo.h>
 
-#include <Servo.h>      
-Servo sg90;             
-int initial_position = 90;   
-int LDR1 = A0;        
-int LDR2 = A1;
-int error = 5;         
-int servopin=4;         
-void setup() 
-{ 
+Servo horizontal;
+Servo vertical;
 
-  sg90.attach(servopin);  
-  pinMode(LDR1, INPUT);   
-  pinMode(LDR2, INPUT);
-  sg90.write(initial_position);   
-  delay(2000);           
-}  
- 
-void loop() 
-{ 
-  int R1 = analogRead(LDR1); 
-  int R2 = analogRead(LDR2); 
-  Serial.println(R1);
-  Serial.println("LDR1");
-  Serial.println(R2);
-  Serial.println("LDR1");
-  delay(300);
-  int diff1= abs(R1 - R2);   
-  int diff2= abs(R2 - R1);
-  
-  if((diff1 <= error) || (diff2 <= error)) {
-    
-  } else {    
-    if(R1 > R2)
-    {
-      initial_position = --initial_position;  
-    }
-    if(R1 < R2) 
-    {
-      initial_position = ++initial_position; 
-    }
+int servohori = 90;
+int servovert = 45;
+
+int ldrlt = A0; // Top Left
+int ldrrt = A3; // Top Right
+int ldrld = A1; // Bottom Left
+int ldrrd = A2; // Bottom Right
+
+int tol = 20;
+
+void setup() {
+  Serial.begin(9600);
+
+  horizontal.attach(9);
+  vertical.attach(10);
+
+  horizontal.write(servohori);
+  vertical.write(servovert);
+
+  delay(1000);
+}
+
+void loop() {
+  int lt = analogRead(ldrlt);
+  int rt = analogRead(ldrrt);
+  int ld = analogRead(ldrld);
+  int rd = analogRead(ldrrd);
+
+  int avt = (lt + rt) / 2;
+  int avd = (ld + rd) / 2;
+  int avl = (lt + ld) / 2;
+  int avr = (rt + rd) / 2;
+
+  int dvert = avt - avd;
+  int dhoriz = avl - avr;
+
+  Serial.print("TL:");
+  Serial.print(lt);
+  Serial.print(" TR:");
+  Serial.print(rt);
+  Serial.print(" BL:");
+  Serial.print(ld);
+  Serial.print(" BR:");
+  Serial.print(rd);
+  Serial.print(" | dV:");
+  Serial.print(dvert);
+  Serial.print(" dH:");
+  Serial.print(dhoriz);
+  Serial.print(" | V:");
+  Serial.print(servovert);
+  Serial.print(" H:");
+  Serial.println(servohori);
+
+  if (dvert > tol) {
+    servovert++;
+  } else if (dvert < -tol) {
+    servovert--;
   }
-  sg90.write(initial_position); 
+
+  if (dhoriz > tol) {
+    servohori--;
+  } else if (dhoriz < -tol) {
+    servohori++;
+  }
+
+  servovert = constrain(servovert, 1, 100);
+  servohori = constrain(servohori, 5, 175);
+
+  vertical.write(servovert);
+  horizontal.write(servohori);
+
   delay(100);
 }
