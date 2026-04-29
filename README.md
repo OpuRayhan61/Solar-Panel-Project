@@ -1,1 +1,1 @@
-# Solar-Panel-Project
+# Automated Solar Panel system
