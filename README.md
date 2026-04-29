@@ -64,5 +64,5 @@ Real use: As load shedding increasing in Bangladesh,it can be used on home rooft
 ---
 
 ## 🧑‍💻 Authors
-Akhtaruzzaman Jamil
-Sabbir Ahmmed
+- Akhtaruzzaman Jamil
+- Sabbir Ahmmed
